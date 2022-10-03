@@ -1,0 +1,13 @@
+<head>
+    <title>Users</title>
+</head>
+<body>
+    <form action="/users">
+        <input type="search" name="term" value="<?= htmlspecialchars($term) ?>">
+        <input type="submit" value="Search">
+    </form>
+    <hr>
+    <?php foreach ($users as $user): ?>
+    <li><b><i><?= htmlspecialchars($user) ?></i></b></li>
+    <?php endforeach ?>
+</body>

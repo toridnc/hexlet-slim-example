@@ -13,24 +13,32 @@ $app = AppFactory::createFromContainer($container);
 $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function ($request, $response) {
-    $response->getBody()->write('Welcome to Slim!');
-    return $response;
-});
-
-$app->get('/users', function ($request, $response) {
-    $response->getBody()->write('GET /users');
-    return $response;
-});
-
-$app->post('/users', function ($request, $response) {
-    $response->withStatus(302);
-    return $response;
+    return $response->write('Welcome to Slim!');
 });
 
 $app->get('/courses/{id}', function ($request, $response, array $args) {
     $id = $args['id'];
-    $response->getBody()->write("Course id: {$id}");
-    return $response;
+    return $response->write("Course id: {$id}");
+});
+
+$app->post('/users', function ($request, $response) {
+    return $response->withStatus(302);
+});
+
+$users = ['mike', 'mishel', 'adel', 'keks', 'kamila'];
+$app->get('/users', function ($request, $response) use ($users) {
+    $term = $request->getQueryParam('term');
+    $filteredUsers = array_filter($users, fn($user) => str_contains($user, $term) === true);
+    $params = ['users' => $filteredUsers];
+    return $this->get('renderer')->render($response, 'users/index.phtml', $params);
+});
+
+$app->get('/users/new', function ($request, $response) {
+    $params = [
+        'user' => ['name' => '', 'email' => '', 'password' => '', 'passwordConfirmation' => '', 'city' => ''],
+        'errors' => []
+    ];
+    return $this->get('renderer')->render($response, "users/new.phtml", $params);
 });
 
 $app->get('/users/{id}', function ($request, $response, $args) {
