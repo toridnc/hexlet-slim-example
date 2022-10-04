@@ -11,9 +11,6 @@
                 <b>Nickname</b>
             <input type="text" name="user[name]" value="<?= htmlspecialchars($user['name']) ?>">
             </label>
-            <?php if (isset($errors['name'])): ?>
-            <div><?= $errors['name'] ?></div>
-            <?php endif ?>
         </div>
         <br>
         <div>
@@ -21,9 +18,6 @@
                 <b>Email</b>
             <input type="email" required name="user[email]" value="<?= htmlspecialchars($user['email']) ?>">
             </label>
-            <?php if (isset($errors['email'])): ?>
-            <div><?= $errors['email'] ?></div>
-            <?php endif ?>
         </div>
         <br>
         <input type="submit" value="Submit">

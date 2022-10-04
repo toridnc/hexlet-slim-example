@@ -21,10 +21,6 @@ $app->get('/courses/{id}', function ($request, $response, array $args) {
     return $response->write("Course id: {$id}");
 });
 
-$app->post('/users', function ($request, $response) {
-    return $response->withStatus(302);
-});
-
 $users = ['mike', 'mishel', 'adel', 'keks', 'kamila'];
 $app->get('/users', function ($request, $response) use ($users) {
     $term = $request->getQueryParam('term');
@@ -34,11 +30,22 @@ $app->get('/users', function ($request, $response) use ($users) {
 });
 
 $app->get('/users/new', function ($request, $response) {
+    $user['id'] = uniqid();
     $params = [
-        'user' => ['name' => '', 'email' => '', 'password' => '', 'passwordConfirmation' => '', 'city' => ''],
-        'errors' => []
+        'user' => ['id' => $id, 'name' => '', 'email' => '']
     ];
-    return $this->get('renderer')->render($response, "users/new.phtml", $params);
+    return $this->get('renderer')->render($response, 'users/new.phtml', $params);
+});
+
+$app->post('/users', function ($request, $response) {
+    $user = $request->getParsedBodyParam('user');
+    $fileUser = json_decode(file_get_contents('src/users.txt'));
+    $fileUser[] = $user;
+    file_put_contents('src/users.txt', json_encode($fileUser));
+    return $response->withRedirect('/users', 302);
+
+    $params = ['user' => $user];
+    return $this->get('renderer')->render($response->withStatus(422), 'users/new.phtml', $params);
 });
 
 $app->get('/users/{id}', function ($request, $response, $args) {
