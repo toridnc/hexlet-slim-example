@@ -1,34 +1,17 @@
 [
     {
-        "name": "Lamy",
-        "email": "lamy@way.net"
+        "name": "Zaw",
+        "email": "zaw@duck.com",
+        "id": "6346b562d069a"
     },
     {
-        "name": "Gizi",
-        "email": "gizi@qake.io"
+        "name": "Laly",
+        "email": "lally76@mail.com",
+        "id": "6346b950f3dd6"
     },
     {
-        "name": "Maty",
-        "email": "maty@duck.com"
-    },
-    {
-        "name": "Asy",
-        "email": "asy@wer.ru"
-    },
-    {
-        "name": "Lasly",
-        "email": "ls@say.com"
-    },
-    {
-        "name": "Lily",
-        "email": "lilllly@day.net"
-    },
-    {
-        "name": "Sam",
-        "email": "sammy34@day.net"
-    },
-    {
-        "name": "Mikky",
-        "email": "mm@fan.com"
+        "name": "Zack",
+        "email": "zacckyy@day.com",
+        "id": "6346b98f0a2b4"
     }
 ]
