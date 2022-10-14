@@ -66,7 +66,7 @@ $users = array_column($allUsers, "name");
 $app->get('/users', function ($request, $response) use ($users) {
     $messages = $this->get('flash')->getMessages();
     $term = $request->getQueryParam('term');
-    $filteredUsers = array_filter($users, fn($user) => str_contains($user, $term) === true);
+    $filteredUsers = array_filter($users, fn($user) => str_contains(strtolower($user), strtolower($term)) === true);
     $params = [
         'users' => $filteredUsers,
         'flash' => $messages
