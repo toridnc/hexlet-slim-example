@@ -43,7 +43,8 @@ $app->get('/users/new', function ($request, $response) {
     return $this->get('renderer')->render($response, 'users/new.phtml', $params);
 })->setName('createNewUser');
 
-$file = 'src/users.json'; // FILE TO SAVE USERS
+// FILE TO SAVE USERS
+$file = 'src/users.json';
 
 // POST NEW USER
 $app->post('/users', function ($request, $response) use ($file, $router) {
@@ -59,9 +60,9 @@ $app->post('/users', function ($request, $response) use ($file, $router) {
     return $this->get('renderer')->render($response->withStatus(422), 'users/new.phtml', $params);
 })->setName('postNewUser');
 
-// GET ALL USERS
-$users = ['Mike', 'Mishel', 'Adel', 'Keks', 'Kamila'];
-$users[] = json_decode(file_get_contents(array_values($file)));
+// GET ALL USERS AND FILTER
+$allUsers = json_decode(file_get_contents($file));
+$users = array_column($allUsers, "name");
 $app->get('/users', function ($request, $response) use ($users) {
     $messages = $this->get('flash')->getMessages();
     $term = $request->getQueryParam('term');
@@ -75,10 +76,13 @@ $app->get('/users', function ($request, $response) use ($users) {
 
 // GET ONE USER
 $app->get('/users/{id}', function ($request, $response, $args) use ($file) {
-    $params = ['id' => $args['id'], 'nickname' => 'user-' . $args['id']];
     if (str_contains($file, $args['id'])) {
         return $response->withStatus(404);
     }
+    $params = [
+        'id' => $args['id'],
+        'nickname' => 'user-' . $args['id']
+    ];
     return $this->get('renderer')->render($response, 'users/show.phtml', $params);
 })->setName('user');
 
