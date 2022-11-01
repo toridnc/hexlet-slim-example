@@ -1,6 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<a href="/users">
+    <button>
+        Users
+    </button>
+</a>
+
 <head>
     <title>New User</title>
 </head>
+
 <body>
     <form action="/users" method="post">
         <h1>New User</h1>
@@ -8,18 +18,20 @@
         <br>
         <div>
             <label>
-                <b>Nickname</b>
-            <input type="text" name="user[name]" value="<?= htmlspecialchars($user['name']) ?>">
+                <b>Nickname *</b>
+            <input type="text" name="user[name]" value="<?= htmlspecialchars($user['name'] ?? '') ?>">
             </label>
         </div>
         <br>
         <div>
             <label>
-                <b>Email</b>
-            <input type="email" required name="user[email]" value="<?= htmlspecialchars($user['email']) ?>">
+                <b>Email *</b>
+            <input type="email" required name="user[email]" value="<?= htmlspecialchars($user['email'] ?? '') ?>">
             </label>
         </div>
         <br>
         <input type="submit" value="Submit">
     </form>
 </body>
+
+</html>

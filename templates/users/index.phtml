@@ -1,8 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<a href="/users/new">
+    <button>
+        Create new user
+    </button>
+</a>
+
 <head>
     <title>Users</title>
 </head>
+
 <body>
     <h1>Users</h1>
+    <!--Displays a message that the user was added successfully-->
     <?php if (count($flash) > 0) : ?>
         <?php foreach ($flash as $messages) : ?>
             <?php foreach ($messages as $message) : ?>
@@ -12,7 +23,7 @@
     <?php endif ?>
     <br>
     <form action="/users">
-        <input type="search" name="term" value="<?= htmlspecialchars($term) ?>">
+        <input type="search" name="term" value="<?= htmlspecialchars($term) ?>" placeholder="Name">
         <input type="submit" value="Search">
     </form>
     <hr>
@@ -20,3 +31,5 @@
     <li><b><i><?= htmlspecialchars($user) ?></i></b></li>
     <?php endforeach ?>
 </body>
+
+</html>
