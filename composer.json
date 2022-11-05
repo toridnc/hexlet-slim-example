@@ -1,4 +1,13 @@
 {
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        },
+        "files": [
+            "src/users.json",
+            "src/Validator.php"
+        ]
+    },
     "require": {
         "slim/slim": "^4.10",
         "slim/psr7": "^1.5",

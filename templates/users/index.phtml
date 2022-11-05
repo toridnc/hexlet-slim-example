@@ -1,15 +1,17 @@
+<!-- templates/users/index.phtml -->
+
 <!DOCTYPE html>
 <html lang="ru">
+
+<head>
+    <title>Users</title>
+</head>
 
 <a href="/users/new">
     <button>
         Create new user
     </button>
 </a>
-
-<head>
-    <title>Users</title>
-</head>
 
 <body>
     <h1>Users</h1>
@@ -27,6 +29,7 @@
         <input type="submit" value="Search">
     </form>
     <hr>
+    <!--Displays all usernames-->
     <?php foreach ($users as $user): ?>
     <li><b><i><?= htmlspecialchars($user) ?></i></b></li>
     <?php endforeach ?>

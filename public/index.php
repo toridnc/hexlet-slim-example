@@ -32,12 +32,6 @@ $app->get('/', function ($request, $response) {
     return $response->write('Welcome to Slim!');
 })->setName('welcome');
 
-// GET ONE COURSE
-$app->get('/courses/{id}', function ($request, $response, array $args) {
-    $id = $args['id'];
-    return $response->write("Course id: {$id}");
-})->setName('course');
-
 // GET FORM FOR POST NEW USER
 $app->get('/users/new', function ($request, $response) {
     $params = [
@@ -48,17 +42,30 @@ $app->get('/users/new', function ($request, $response) {
 
 // POST NEW USER
 $app->post('/users', function ($request, $response) use ($file, $router) {
+    // Extract data from the form.
     $user = $request->getParsedBodyParam('user');
+
+    $validator = new App\Validator();
+    // Check the correctness of data.
+    $errors = $validator->validate($user);
+
     $fileUser = json_decode(file_get_contents($file));
     // Create user unique id and add user to file to save users.
     $user['id'] = uniqid();
     $fileUser[] = $user;
     file_put_contents($file, json_encode($fileUser));
 
+    if (count($errors) === 0) {
+    // If the data is correct, save, add a flush and redirect.
     $this->get('flash')->addMessage('success', 'User was added successfully');
     return $response->withRedirect($router->urlFor('users'), 302);
+    }
 
-    $params = ['user' => $user];
+    $params = [
+        'user' => $user,
+        'errors' => $errors
+    ];
+    // If there are errors, we set the response code to 422 and render the form with errors.
     return $this->get('renderer')->render($response->withStatus(422), 'users/new.phtml', $params);
 
 })->setName('postNewUser');
@@ -68,14 +75,16 @@ $app->get('/users', function ($request, $response) use ($file) {
     $allUsers = json_decode(file_get_contents($file));
     // Get a column with names from a set of records.
     $names = array_column($allUsers, "name");
+    // Extract the entered data.
     $term = $request->getQueryParam('term');
     // Filter users on request.
     $filteredUsers = array_filter($names, fn($name) => str_contains(strtolower($name), strtolower($term)) === true);
+    // Add a message that the user was added successfully.
     $messages = $this->get('flash')->getMessages();
 
     $params = [
         'users' => $filteredUsers,
-        'flash' => $messages
+        'flash' => $messages,
     ];
     return $this->get('renderer')->render($response, 'users/index.phtml', $params);
 
