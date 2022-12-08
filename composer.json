@@ -1,10 +1,20 @@
 {
+    "name": "hexlet/slimexample",
+    "description": "Working with Slim Microframework: MVC, templating, routing, sending forms",
+    "homepage": "https://github.com/toridnc/hexlet-slim-example",
+    "readme": "https://github.com/toridnc/hexlet-slim-example#readme",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "toridnc",
+            "email": "riadev@inbox.ru"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "App\\": "src/"
         },
         "files": [
-            "src/users.json",
             "src/Validator.php"
         ]
     },

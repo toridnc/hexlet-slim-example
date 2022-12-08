@@ -7,6 +7,7 @@ class Validator
     public function validate(array $form)
     {
         $errors = [];
+
         if ($form['name'] === '') {
             $errors['name'] = "Can't be blank";
         }

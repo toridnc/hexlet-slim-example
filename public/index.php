@@ -1,9 +1,22 @@
 <?php
 
+/**
+ * Hexlet slim example
+ *
+ * PHP version 7.4
+ *
+ * @category hexlet-slim-example
+ * @package  hexlet-slim-example
+ * @author   toridnc <riadev@inbox.ru>
+ * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @link     https://github.com/toridnc/hexlet-slim-example
+ */
+
 require __DIR__ . '/../vendor/autoload.php';
 
 use Slim\Factory\AppFactory;
 use DI\Container;
+use App\Validator;
 
 session_start();
 
@@ -49,16 +62,15 @@ $app->post('/users', function ($request, $response) use ($file, $router) {
     // Check the correctness of data.
     $errors = $validator->validate($user);
 
-    $fileUser = json_decode(file_get_contents($file));
-    // Create user unique id and add user to file to save users.
-    $user['id'] = uniqid();
-    $fileUser[] = $user;
-    file_put_contents($file, json_encode($fileUser));
-
     if (count($errors) === 0) {
-    // If the data is correct, save, add a flush and redirect.
-    $this->get('flash')->addMessage('success', 'User was added successfully');
-    return $response->withRedirect($router->urlFor('users'), 302);
+        $fileUser = json_decode(file_get_contents($file));
+        // Create user unique id and add user to file to save users.
+        $user['id'] = uniqid();
+        $fileUser[] = $user;
+        file_put_contents($file, json_encode($fileUser));
+        // If the data is correct, save, add a flush and redirect.
+        $this->get('flash')->addMessage('success', 'User was added successfully');
+        return $response->withRedirect($router->urlFor('users'), 302);
     }
 
     $params = [
