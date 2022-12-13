@@ -1,0 +1,56 @@
+<!-- templates/users/edit.phtml -->
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title>Edit user</title>
+</head>
+
+<body>
+    <h1>Hexlet Slim Project</h1>
+
+    <!--Buttons-->
+    <a href="/">
+        <button>
+            About
+        </button>
+    </a>
+    <a href="/users">
+        <button>
+            Users
+        </button>
+    </a>
+    <a href="/users/new">
+        <button>
+            Sign in
+        </button>
+    </a>
+
+    <!--Edit user-->
+    <form action="/users/<?= htmlspecialchars($user['id']) ?>/edit" method="post">
+        <input type="hidden" name="_METHOD" value="PATCH">
+        <div>
+            <h1>Edit user <?= htmlspecialchars($username) ?></h1>
+            <b>ID</b> = <?= htmlspecialchars($id) ?>
+        </div>
+        <br>
+        <div>
+            <label>
+                <b>Username</b>
+            <input type="text" name="user[name]" value="<?= htmlspecialchars($user['name'] ?? '') ?>" placeholder="<?= htmlspecialchars($username) ?>">
+            </label>
+        </div>
+        <br>
+        <div>
+            <label>
+                <b>Email</b>
+            <input type="email" required name="user[email]" value="<?= htmlspecialchars($user['email'] ?? '') ?>" placeholder="<?= htmlspecialchars($email) ?>">
+            </label>
+        </div>
+        <br>
+        <input type="submit" value="Update">
+    </form>
+</body>
+
+</html>

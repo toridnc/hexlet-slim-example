@@ -15,6 +15,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use Slim\Factory\AppFactory;
+use Slim\Middleware\MethodOverrideMiddleware;
 use DI\Container;
 use App\Validator;
 
@@ -24,28 +25,26 @@ $container = new Container();
 $container->set('renderer', function () {
     return new \Slim\Views\PhpRenderer(__DIR__ . '/../templates');
 });
-
-$app = AppFactory::createFromContainer($container);
-$app->addErrorMiddleware(true, true, true);
-
 $container->set('flash', function () {
     return new \Slim\Flash\Messages();
 });
 
-AppFactory::setContainer($container);
-$app = AppFactory::create();
+$app = AppFactory::createFromContainer($container);
+$app->addErrorMiddleware(true, true, true);
+$app->add(MethodOverrideMiddleware::class);
 
 $router = $app->getRouteCollector()->getRouteParser();
 
 // FILE TO SAVE USERS
-$file = 'src/users.json';
+$file = 'vendor/users.json';
 
 // WELCOME
 $app->get('/', function ($request, $response) {
-    return $response->write('Welcome to Slim!');
+    return $this->get('renderer')->render($response, 'index.phtml');
 })->setName('welcome');
 
-// GET FORM FOR POST NEW USER
+// BEGIN (create new user)
+// Form for post new user
 $app->get('/users/new', function ($request, $response) {
     $params = [
         'user' => ['name' => '', 'email' => '', 'id' => $id]
@@ -53,7 +52,7 @@ $app->get('/users/new', function ($request, $response) {
     return $this->get('renderer')->render($response, 'users/new.phtml', $params);
 })->setName('createNewUser');
 
-// POST NEW USER
+// Post new user
 $app->post('/users', function ($request, $response) use ($file, $router) {
     // Extract data from the form.
     $user = $request->getParsedBodyParam('user');
@@ -81,6 +80,7 @@ $app->post('/users', function ($request, $response) use ($file, $router) {
     return $this->get('renderer')->render($response->withStatus(422), 'users/new.phtml', $params);
 
 })->setName('postNewUser');
+// END
 
 // GET ALL USERS AND FILTER
 $app->get('/users', function ($request, $response) use ($file) {
@@ -96,7 +96,7 @@ $app->get('/users', function ($request, $response) use ($file) {
 
     $params = [
         'users' => $filteredUsers,
-        'flash' => $messages,
+        'flash' => $messages
     ];
     return $this->get('renderer')->render($response, 'users/index.phtml', $params);
 
@@ -108,6 +108,7 @@ $app->get('/users/{id}', function ($request, $response, $args) use ($file) {
     $allUsers = json_decode(file_get_contents($file));
     // Get column with names, and as keys of the return array we use values from column "id".
     $ids = array_column($allUsers, "name", "id");
+    $emails = array_column($allUsers, "email", "id");
 
     // 404 error if id does not exist and drawing template if there is.
     if (!array_key_exists($id, $ids)) {
@@ -116,10 +117,29 @@ $app->get('/users/{id}', function ($request, $response, $args) use ($file) {
 
     $params = [
         'id' => $id,
-        'username' => $ids[$id]
+        'username' => $ids[$id],
+        'email' => $emails[$id]
     ];
     return $this->get('renderer')->render($response, 'users/show.phtml', $params);
 
 })->setName('user');
+
+// BEGIN (edit user)
+// Form for edit user
+$app->get('/users/{id}/edit', function ($request, $response, $args) use ($file) {
+    $id = $args['id'];
+    $allUsers = json_decode(file_get_contents($file));
+    // Get column with names, and as keys of the return array we use values from column "id".
+    $ids = array_column($allUsers, "name", "id");
+    $emails = array_column($allUsers, "email", "id");
+    $params = [
+        'id' => $id,
+        'username' => $ids[$id],
+        'email' => $emails[$id],
+        'user' => ['name' => '', 'email' => '', 'id' => $id]
+    ];
+    return $this->get('renderer')->render($response, 'users/edit.phtml', $params);
+})->setName('editUser');
+// END
 
 $app->run();

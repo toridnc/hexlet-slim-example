@@ -4,23 +4,35 @@
 <html lang="ru">
 
 <head>
-    <title>New User</title>
+    <title>Sign in</title>
 </head>
 
-<a href="/users">
-    <button>
-        Users
-    </button>
-</a>
-
 <body>
+    <h1>Hexlet Slim Project</h1>
+
+    <!--Buttons-->
+    <a href="/">
+        <button>
+            About
+        </button>
+    </a>
+    <a href="/users">
+        <button>
+            Users
+        </button>
+    </a>
+    <a href="/users/new">
+        <button>
+            Sign in
+        </button>
+    </a>
+
+    <!--Sign in-->
     <form action="/users" method="post">
-        <h1>New User</h1>
-        <hr>
-        <br>
+        <h1>Sign in</h1>
         <div>
             <label>
-                <b>Nickname *</b>
+                <b>Username *</b>
             <input type="text" name="user[name]" value="<?= htmlspecialchars($user['name'] ?? '') ?>">
             </label>
             <!--Displays a message that the field cannot be empty-->

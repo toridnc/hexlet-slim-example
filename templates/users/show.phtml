@@ -4,24 +4,37 @@
 <html lang="ru">
 
 <head>
-    <title>User</title>
+    <title>Personal data</title>
 </head>
 
-<a href="/users">
-    <button>
-        Users
-    </button>
-</a>
-
-<a href="/users/new">
-    <button>
-        Create new user
-    </button>
-</a>
-
 <body>
-    <p>username = <?= htmlspecialchars($username) ?><br>
-    id = <?= htmlspecialchars($id) ?></p>
+    <h1>Hexlet Slim Project</h1>
+
+    <!--Buttons-->
+    <a href="/">
+        <button>
+            About
+        </button>
+    </a>
+    <a href="/users">
+        <button>
+            Users
+        </button>
+    </a>
+    <a href="/users/new">
+        <button>
+            Sign in
+        </button>
+    </a>
+    
+    <!--Personal data-->
+    <h1>Personal data</h1>
+    <p>
+        <b>ID</b> = <?= htmlspecialchars($id) ?><br>
+        <b>Username</b> = <?= htmlspecialchars($username) ?><br>
+        <b>Email</b> = <?= htmlspecialchars($email) ?>
+    </p>
+    <input type="submit" value="Update">
 </body>
 
 </html>

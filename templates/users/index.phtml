@@ -7,13 +7,27 @@
     <title>Users</title>
 </head>
 
-<a href="/users/new">
-    <button>
-        Create new user
-    </button>
-</a>
-
 <body>
+    <h1>Hexlet Slim Project</h1>
+
+    <!--Buttons-->
+    <a href="/">
+        <button>
+            About
+        </button>
+    </a>
+    <a href="/users">
+        <button>
+            Users
+        </button>
+    </a>
+    <a href="/users/new">
+        <button>
+            Sign in
+        </button>
+    </a>
+
+    <!--Users-->
     <h1>Users</h1>
     <!--Displays a message that the user was added successfully-->
     <?php if (count($flash) > 0) : ?>
@@ -23,7 +37,6 @@
             <?php endforeach ?>
         <?php endforeach ?>
     <?php endif ?>
-    <br>
     <form action="/users">
         <input type="search" name="term" value="<?= htmlspecialchars($term) ?>" placeholder="Name">
         <input type="submit" value="Search">
@@ -31,7 +44,9 @@
     <hr>
     <!--Displays all usernames-->
     <?php foreach ($users as $user): ?>
-    <li><b><i><?= htmlspecialchars($user) ?></i></b></li>
+    <div>
+        <li><b><i><?= htmlspecialchars($user) ?></i></b></li>
+    </div>
     <?php endforeach ?>
 </body>
 
