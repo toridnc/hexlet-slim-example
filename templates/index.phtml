@@ -1,40 +1,13 @@
 <!-- templates/index.phtml -->
 
-<!DOCTYPE html>
-<html lang="ru">
+<?php require 'components/header.phtml'; ?>
 
-<head>
-    <title>Hexlet Slim Project</title>
-</head>
-
-<body>
-    <h1>Welcome to Hexlet Slim Project!</h1>
-
-    <!--Buttons-->
-    <a href="/">
-        <button>
-            About
-        </button>
-    </a>
-    <a href="/users">
-        <button>
-            Users
-        </button>
-    </a>
-    <a href="/users/new">
-        <button>
-            Sign in
-        </button>
-    </a>
-
+<main>
     <!--Description-->
-<div>
-    <p>Working with Slim Microframework: MVC, templating, routing, sending forms. Elements of typical sites, such as authentication or a complete set of Entity Operations (CRUD).</p>
-</div>
+    <div>
+        <p>Working with Slim Microframework: MVC, templating, routing, sending forms. Elements of typical sites, such as authentication or a complete set of Entity Operations (CRUD).</p>
+    </div>
 
-<a href="https://github.com/toridnc/hexlet-slim-example.git">
-    <button>
-        GitHub
-    </button>
-</a>
-</body>
+</main>
+
+<?php require 'components/footer.phtml'; ?>

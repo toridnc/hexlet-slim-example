@@ -1,0 +1,37 @@
+<!-- templates/authentication.phtml -->
+
+<?php require 'templates/components/header.phtml'; ?>
+
+<main>
+    <h1>Login</h1>
+
+    <!--Displays a message-->
+    <?php if (count($flash) > 0) : ?>
+        <?php foreach ($flash as $messages) : ?>
+            <?php foreach ($messages as $message) : ?>
+                <i style="color: red"><?= $message ?></i>
+            <?php endforeach ?>
+        <?php endforeach ?>
+    <?php endif; ?>
+
+    <?php if (isset($currentUser['email'])) :?>
+                <div>
+                    You are already logged.<br>
+                    Current user <b><?= $currentUser['name'] ?></b>
+                </div>
+                <form action="/login" method="post">
+                    <input type="hidden" name="_METHOD" value="DELETE">
+                    <br>
+                    <input type="submit" value="Unlogin" style="color: gray">
+                </form>
+    <?php else :?>
+                <form action="/login" method="post">
+                    <input type="email" required name="user[email]" value="">
+                    <br>
+                    <input type="submit" value="Login" style="color: green">
+                </form>
+    <?php endif; ?> 
+
+</main>
+<br>
+<?php require 'templates/components/footer.phtml'; ?>

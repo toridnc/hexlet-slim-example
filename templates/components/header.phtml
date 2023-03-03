@@ -1,0 +1,39 @@
+<!-- templates/components/header.phtml -->
+
+<!DOCTYPE html>
+<html lang="ru">
+
+    <head>
+        <title>Hexlet Slim Project</title>
+    </head>
+
+    <body>
+
+        <header>
+            <h1>Hexlet Slim Project</h1>
+            <!--Buttons-->
+            <a href="/users">
+                <button>
+                    Users
+                </button>
+            </a>
+            <?php if (isset($_SESSION['name'])) :?>
+                <a href="/users/<?= $_SESSION['id'] ?>">
+                    <button>
+                        <?= $_SESSION['name']?>
+                    </button>
+                </a>
+            <?php else :?>
+                <a href="/login">
+                    <button>
+                        Login
+                    </button>
+                </a>
+                <a href="/users/new">
+                    <button>
+                        Create new user
+                    </button>
+                </a>
+            <?php endif; ?>
+
+        </header>

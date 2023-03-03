@@ -1,56 +1,46 @@
 <!-- templates/users/edit.phtml -->
 
-<!DOCTYPE html>
-<html lang="ru">
+<?php require 'templates/components/header.phtml'; ?>
 
-<head>
-    <title>Edit user</title>
-</head>
-
-<body>
-    <h1>Hexlet Slim Project</h1>
-
-    <!--Buttons-->
-    <a href="/">
-        <button>
-            About
-        </button>
-    </a>
-    <a href="/users">
-        <button>
-            Users
-        </button>
-    </a>
-    <a href="/users/new">
-        <button>
-            Sign in
-        </button>
-    </a>
-
+<main>
     <!--Edit user-->
-    <form action="/users/<?= htmlspecialchars($user['id']) ?>/edit" method="post">
+    <form action="/users/edit" method="post">
         <input type="hidden" name="_METHOD" value="PATCH">
         <div>
-            <h1>Edit user <?= htmlspecialchars($username) ?></h1>
-            <b>ID</b> = <?= htmlspecialchars($id) ?>
+            <h1>Edit personal data <?= $user['name'] ?></h1>
+            <b>ID</b> = <?= $user['id'] ?>
         </div>
         <br>
         <div>
             <label>
                 <b>Username</b>
-            <input type="text" name="user[name]" value="<?= htmlspecialchars($user['name'] ?? '') ?>" placeholder="<?= htmlspecialchars($username) ?>">
+            <input type="text" name="user[name]" value="<?= htmlspecialchars($user['name'] ?? '') ?>" >
             </label>
+            <!--Displays a message that the field cannot be empty-->
+            <?php if (isset($errors['name'])): ?>
+                <div style="color: red"><?= $errors['name'] ?></div>
+            <?php endif ?>
         </div>
         <br>
         <div>
             <label>
                 <b>Email</b>
-            <input type="email" required name="user[email]" value="<?= htmlspecialchars($user['email'] ?? '') ?>" placeholder="<?= htmlspecialchars($email) ?>">
+            <input type="email" required name="user[email]" value="<?= htmlspecialchars($user['email'] ?? '') ?>" >
             </label>
+            <!--Displays a message that the field cannot be empty-->
+            <?php if (isset($errors['email'])): ?>
+                <div style="color: red"><?= $errors['email'] ?></div>
+            <?php endif ?>
         </div>
         <br>
-        <input type="submit" value="Update">
+        <input type="submit" value="Update" style="color: green">
     </form>
-</body>
+    <br>
+    <form action="/users/<?= $user['id'] ?>" method="post">
+        <input type="hidden" name="_METHOD" value="DELETE">
+        <input type="submit" value="Remove" style="color: gray">
+    </form>
 
-</html>
+</main>
+<br>
+<?php require 'templates/components/footer.phtml'; ?>

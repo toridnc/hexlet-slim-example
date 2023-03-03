@@ -1,32 +1,8 @@
-<!-- templates/users/index.phtml -->
+<!-- templates/users/users.phtml -->
 
-<!DOCTYPE html>
-<html lang="ru">
+<?php require 'templates/components/header.phtml'; ?>
 
-<head>
-    <title>Users</title>
-</head>
-
-<body>
-    <h1>Hexlet Slim Project</h1>
-
-    <!--Buttons-->
-    <a href="/">
-        <button>
-            About
-        </button>
-    </a>
-    <a href="/users">
-        <button>
-            Users
-        </button>
-    </a>
-    <a href="/users/new">
-        <button>
-            Sign in
-        </button>
-    </a>
-
+<main>
     <!--Users-->
     <h1>Users</h1>
     <!--Displays a message that the user was added successfully-->
@@ -41,13 +17,22 @@
         <input type="search" name="term" value="<?= htmlspecialchars($term) ?>" placeholder="Name">
         <input type="submit" value="Search">
     </form>
-    <hr>
+    <br>
     <!--Displays all usernames-->
-    <?php foreach ($users as $user): ?>
-    <div>
-        <li><b><i><?= htmlspecialchars($user) ?></i></b></li>
-    </div>
-    <?php endforeach ?>
-</body>
+    <?php if (isset($users)) : ?>
+        <?php foreach ($users as $user): ?>
+        <div>
+            <a href="/users/<?= $user['id'] ?>">
+                <li><b><i><?= $user['name'] ?></i></b></li>
+            </a>
+        </div>
+        <?php endforeach ?>
+    <?php else :?>
+        <div>
+            <i>Nothing to display :c</i>
+        </div>
+    <?php endif; ?>
 
-</html>
+</main>
+<br>
+<?php require 'templates/components/footer.phtml'; ?>

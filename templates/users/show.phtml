@@ -1,40 +1,33 @@
 <!-- templates/users/show.phtml -->
 
-<!DOCTYPE html>
-<html lang="ru">
+<?php require 'templates/components/header.phtml'; ?>
 
-<head>
-    <title>Personal data</title>
-</head>
-
-<body>
-    <h1>Hexlet Slim Project</h1>
-
-    <!--Buttons-->
-    <a href="/">
-        <button>
-            About
-        </button>
-    </a>
-    <a href="/users">
-        <button>
-            Users
-        </button>
-    </a>
-    <a href="/users/new">
-        <button>
-            Sign in
-        </button>
-    </a>
-    
-    <!--Personal data-->
-    <h1>Personal data</h1>
+<main>
+    <h1>Personal data <?= $user['name'] ?></h1>
+    <!--Displays a message that the user was updated successfully-->
+    <?php if (count($flash) > 0) : ?>
+        <?php foreach ($flash as $messages) : ?>
+            <?php foreach ($messages as $message) : ?>
+                <i style="color: green"><?= $message ?></i>
+            <?php endforeach ?>
+        <?php endforeach ?>
+    <?php endif ?>
     <p>
-        <b>ID</b> = <?= htmlspecialchars($id) ?><br>
-        <b>Username</b> = <?= htmlspecialchars($username) ?><br>
-        <b>Email</b> = <?= htmlspecialchars($email) ?>
+        <!--Personal data-->
+        <b>ID</b> = <?= $user['id'] ?><br>
+        <b>Username</b> = <?= $user['name'] ?><br>
+        <b>Email</b> = <?= $user['email'] ?>
     </p>
-    <input type="submit" value="Update">
-</body>
-
-</html>
+    <?php if ($_SESSION['id'] === $user['id']) :?>
+        <a href="/users/<?= $user['id'] ?>/edit">
+            <input type="submit" value="Profile update">
+        </a>
+        <form action="/login" method="post">
+            <input type="hidden" name="_METHOD" value="DELETE">
+            <br>
+            <input type="submit" value="Unlogin" style="color: gray">
+        </form>
+    <?php endif; ?>
+</main>
+<br>
+<?php require 'templates/components/footer.phtml'; ?>
