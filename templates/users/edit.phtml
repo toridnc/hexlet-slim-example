@@ -4,7 +4,7 @@
 
 <main>
     <!--Edit user-->
-    <form action="/users/edit" method="post">
+    <form action="/users/<?= $user['id'] ?>" method="post">
         <input type="hidden" name="_METHOD" value="PATCH">
         <div>
             <h1>Edit personal data <?= $user['name'] ?></h1>

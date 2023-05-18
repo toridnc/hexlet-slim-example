@@ -4,13 +4,12 @@
 <html lang="ru">
 
     <head>
-        <title>Hexlet Slim Project</title>
+        <title>Slim Project</title>
     </head>
 
     <body>
 
         <header>
-            <h1>Hexlet Slim Project</h1>
             <!--Buttons-->
             <a href="/users">
                 <button>
@@ -20,7 +19,7 @@
             <?php if (isset($_SESSION['name'])) :?>
                 <a href="/users/<?= $_SESSION['id'] ?>">
                     <button>
-                        <?= $_SESSION['name']?>
+                        Me
                     </button>
                 </a>
             <?php else :?>
