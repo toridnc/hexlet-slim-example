@@ -36,7 +36,7 @@ $container->set('flash', function () {
 $app = AppFactory::createFromContainer($container);
 $app->addErrorMiddleware(true, true, true);
 // Method override support
-$app->add(MethodOverrideMiddleware::class); 
+$app->add(MethodOverrideMiddleware::class);
 $router = $app->getRouteCollector()->getRouteParser();
 
 // WELCOME
@@ -104,8 +104,8 @@ $app->post('/users', function ($request, $response) use ($router) {
         $encodedUsers = json_encode($allUsers);
         // If the data is correct, save, add a flush and redirect.
         $this->get('flash')->addMessage('success', 'User was added successfully');
-        return $response->withHeader('Set-Cookie', "users={$encodedUsers};Path=/")->withRedirect($router->urlFor('users'), 302);
-        //return $response->withRedirect($router->urlFor('users'), 302);
+        return $response->withHeader('Set-Cookie', "users={$encodedUsers};Path=/")
+                        ->withRedirect($router->urlFor('users'), 302);
     }
 
     $params = [
@@ -114,7 +114,6 @@ $app->post('/users', function ($request, $response) use ($router) {
     ];
     // If there are errors, we set the response code to 422 and render the form with errors.
     return $this->get('renderer')->render($response->withStatus(422), 'users/new.phtml', $params);
-
 })->setName('postNewUser');
 // END
 
@@ -127,14 +126,14 @@ $app->get('/users', function ($request, $response) {
     // Extract the entered data.
     $term = $request->getQueryParam('term');
     // Filter users on request.
-    $filteredUsers = array_filter($allUsers, fn($user) => str_starts_with(strtolower($user['name']), strtolower($term)) === true);
+    $filteredUsers = array_filter($allUsers, fn($user)
+        => str_starts_with(strtolower($user['name']), strtolower($term)) === true);
 
     $params = [
         'flash' => $messages,
         'users' => $filteredUsers
     ];
     return $this->get('renderer')->render($response, 'users/users.phtml', $params);
-
 })->setName('users');
 
 // GET ONE USER
@@ -165,7 +164,6 @@ $app->get('/users/{id}', function ($request, $response, $args) {
         'flash' => $messages
     ];
     return $this->get('renderer')->render($response, 'users/show.phtml', $params);
-
 })->setName('user');
 
 // Form for edit user
@@ -217,13 +215,13 @@ $app->patch('/users/{id}', function ($request, $response, $args) use ($router) {
         $allUsers[$user['id'] === $id] = $user;
         $encodedUsers = json_encode($allUsers);
         $this->get('flash')->addMessage('success', 'User was update successfully');
-        return $response->withHeader('Set-Cookie', "users={$encodedUsers};Path=/")->withRedirect($router->urlFor('users'), 302);
+        return $response->withHeader('Set-Cookie', "users={$encodedUsers};Path=/")
+                        ->withRedirect($router->urlFor('users'), 302);
     }
 
     // If the new data is uncorrect
     $params = ['user' => $user, 'errors' => $errors];
     return $this->get('renderer')->render($response, 'users/edit.phtml', $params);
-
 })->setName('edit');
 // END
 
@@ -246,7 +244,8 @@ $app->delete('/users/{id}', function ($request, $response, $args) use ($router) 
     $_SESSION = [];
     session_destroy();
 
-    return $response->withHeader('Set-Cookie', "users={$encodedUsers};Path=/")->withRedirect($router->urlFor('users'), 302);
+    return $response->withHeader('Set-Cookie', "users={$encodedUsers};Path=/")
+                    ->withRedirect($router->urlFor('users'), 302);
 })->setName('delete');
 
 $app->run();

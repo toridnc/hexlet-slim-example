@@ -1,0 +1,20 @@
+name: PHP_CodeSniffer
+
+on:
+  - push
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Install project
+      - name: Install
+        run: make install
+
+      # Run linter
+      - name: Linter
+        run: make lint

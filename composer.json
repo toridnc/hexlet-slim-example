@@ -25,5 +25,8 @@
         "slim/php-view": "^3.2",
         "php-di/php-di": "^6.4",
         "slim/flash": "^0.4.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*"
     }
 }
