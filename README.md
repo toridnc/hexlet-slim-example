@@ -2,6 +2,8 @@
 
 #### Working with Slim Microframework: MVC, templating, routing, sending forms. Elements of typical sites, such as authentication or a complete set of Entity Operations (CRUD).
 
+![Crud](/assets/crud2.png "Crud2")
+
 ![Crud](/assets/crud.png "Crud")
 
 ## Install

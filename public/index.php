@@ -48,7 +48,6 @@ $app->get('/', function ($request, $response) {
 $app->get('/login', function ($request, $response) {
     // Catch a message
     $flash = $this->get('flash')->getMessages();
-    var_dump($_SESSION);
 
     $params = [
         'currentUser' => $_SESSION ?? null,
@@ -73,7 +72,7 @@ $app->post('/login', function ($request, $response) use ($router) {
     return $response->withRedirect($router->urlFor('login'));
 });
 
-// DELETE
+// DELETE SESSION
 $app->delete('/login', function ($request, $response) use ($router) {
     $_SESSION = [];
     session_destroy();
@@ -106,7 +105,6 @@ $app->post('/users', function ($request, $response) use ($router) {
         // If the data is correct, save, add a flush and redirect.
         $this->get('flash')->addMessage('success', 'User was added successfully');
         return $response->withHeader('Set-Cookie', "user={$allUsers};Path=/")->withRedirect($router->urlFor('users'), 302);
-        // return $response->withRedirect($router->urlFor('users'), 302);
     }
 
     $params = [
@@ -129,8 +127,8 @@ $app->get('/users', function ($request, $response) {
     $term = $request->getQueryParam('term');
     // Filter users on request.
     $filteredUsers = array_filter($allUsers, fn($user) => str_contains(strtolower($user['name']), strtolower($term)) === true);
+
     var_dump($allUsers);
-    var_dump($_SESSION);
 
     $params = [
         'flash' => $messages,
@@ -186,7 +184,6 @@ $app->get('/users/{id}/edit', function ($request, $response, $args) {
         continue;
     }
     var_dump($user);
-    var_dump($_SESSION);
 
     $params = [
         'user' => $user
@@ -197,36 +194,51 @@ $app->get('/users/{id}/edit', function ($request, $response, $args) {
 // EDIT USER
 $app->patch('/users/{id}', function ($request, $response, $args) use ($router) {
     $id = $args['id'];
+
     // Extract new data from the form
     $editUser = $request->getParsedBodyParam('user');
-    //$editUser['id'] = $id;
+    // Extract all users
+    $allUsers = json_decode($request->getCookieParam('user', json_encode([])), true);
 
-    // Check the correctness of new data
-    $validator = new App\Validator();
+    // $newUsers = [];
+    // foreach ($allUsers as $user) {
+    //     if ($user['id'] === $id) {
+    //         continue;
+    //     }
+    //     $newUsers[] = $user;
+    // }
+
+    // Get user data on 'id'
+    $user;
+    foreach ($allUsers as $element) {
+        if ($element['id'] === $id) {
+            $user = $element;
+            break;
+        }
+        continue;
+    }
+
+    $validator = new Validator();
     $errors = $validator->validate($editUser);
 
     // If the data is correct, save, add a flush and redirect
     if (count($errors) === 0) {
-        $allUsers = json_decode($request->getCookieParam('user', json_encode([])), true);
-        // Get user data on 'id'
-        $user;
-        foreach ($allUsers as $element) {
-            if ($element['id'] === $id) {
-                $user = $element;
-                break;
-            }
-            continue;
-        }
         $user['name'] = $editUser['name'];
         $user['email'] = $editUser['email'];
-        $allUsers = json_encode($user);
+        $allUsers[$user[$id]] = $user;
+        // $newUsers[] = $user;
+        // $users = json_encode($newUsers);
+        // $user = json_encode($user); // + $user Заменяет все поля на первую букву // + $allUsers Всё стирает
+        // $allUsers = json_encode($user); // + $user Всё стирает // + $allUsers Заменяет все поля на первую букву 
         $this->get('flash')->addMessage('success', 'User was update successfully');
-        return $response->withHeader('Set-Cookie', "user={$user};Path=/")->withRedirect($router->urlFor('users'), 302);
+        //return $response->withHeader('Set-Cookie', "user={$user};Path=/")->withRedirect($router->urlFor('users'), 302);
+        return $response->withRedirect($router->urlFor('users'), 302);
     }
 
     // If the new data is uncorrect
     $params = ['user' => $user, 'errors' => $errors];
     return $this->get('renderer')->render($response, 'users/edit.phtml', $params);
+
 })->setName('edit');
 // END
 
@@ -235,16 +247,21 @@ $app->delete('/users/{id}', function ($request, $response, $args) use ($router) 
     $id = $args['id'];
     $allUsers = json_decode($request->getCookieParam('user', json_encode([])), true);
 
+    // Get user data on 'id'
     $newUsers = [];
     foreach ($allUsers as $user) {
         if ($user['id'] === $id) {
-            unset($user);
+            continue;
         }
+        $newUsers[] = $user;
     }
+    $users = json_encode($newUsers);
 
-    $this->get('flash')->addMessage('success', 'Users has been deleted');
-    //return $response->withRedirect($router->urlFor('users'), 302);
-    return $response->withHeader('Set-Cookie', "user={$newUsers};Path=/")->withRedirect($router->urlFor('users'), 302);
+    // Delete session
+    $_SESSION = [];
+    session_destroy();
+
+    return $response->withHeader('Set-Cookie', "user={$users};Path=/")->withRedirect($router->urlFor('users'), 302);
 })->setName('delete');
 
 $app->run();

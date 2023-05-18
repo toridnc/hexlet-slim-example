@@ -9,7 +9,7 @@
         <div>
             <label>
                 <b>Username *</b>
-            <input type="text" name="user[name]" value="<?= htmlspecialchars($user['name'] ?? '') ?>">
+            <input type="text" name="user[name]" value="<?= htmlspecialchars($user['name']) ?>">
             </label>
             <!--Displays a message that the field cannot be empty-->
             <?php if (isset($errors['name'])): ?>
@@ -20,7 +20,7 @@
         <div>
             <label>
                 <b>Email *</b>
-            <input type="email" required name="user[email]" value="<?= htmlspecialchars($user['email'] ?? '') ?>">
+            <input type="email" required name="user[email]" value="<?= htmlspecialchars($user['email']) ?>">
             </label>
             <!--Displays a message that the field cannot be empty-->
             <?php if (isset($errors['email'])): ?>
